@@ -18,6 +18,8 @@
 
     <string name="full_fill">Заполните все поля</string>
 
+    <string name = "pcs">штук</string>
+
     <string-array name="string_array_menu">
         <item> изменить </item>
         <item> удалить </item>

@@ -18,6 +18,8 @@
 
     <string name="full_fill">Fill in all the fields</string>
 
+    <string name = "pcs">pcs</string>
+
     <string-array name="string_array_menu">
         <item> edit </item>
         <item> delete </item>

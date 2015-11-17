@@ -1,12 +1,10 @@
 package ru.bolobanov.shop_manager.adapters;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import java.util.LinkedList;
 import java.util.List;
-
 
 import ru.bolobanov.shop_manager.Item;
 import ru.bolobanov.shop_manager.R;
@@ -36,7 +33,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     public final int EDIT = 0;
     public final int DELETE = 1;
 
-    private final List<Item> mItems = new LinkedList<Item>();
+    private final List<Item> mItems = new LinkedList<>();
 
     private final LayoutInflater mInflater;
 
@@ -101,8 +98,9 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             holder.mDataLinear.setVisibility(View.VISIBLE);
             holder.mProgressLinear.setVisibility(View.GONE);
             holder.mNameText.setText(mItems.get(position).mName);
-            holder.mPriceText.setText(String.valueOf(mItems.get(position).mPrice));
-            holder.mNumberText.setText(String.valueOf(mItems.get(position).mNumber));
+            holder.mPriceText.setText(new StringBuilder().append(mItems.get(position).mPrice).append("$").toString());
+            holder.mNumberText.setText(new StringBuilder().append(mItems.get(position).mNumber).
+                    append(" ").append(mContext.getString(R.string.pcs)));
         }
     }
 
@@ -140,7 +138,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     //либо добавлени нового
     public void addItem(final Item pItem) {
         //если длина списка == количество записей в таблице
-        //и если последний элемент - крутилочка
+        //и если последний элемент - не крутилочка
         //показываем новый
         //иначе - нет, его и не должно пока быть
         if ((mItems.size() == scale) && (mItems.get(mItems.size() - 1) != null)) {
