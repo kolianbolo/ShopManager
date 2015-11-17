@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Список товаров</string>
+
+    <string name="action_settings">Настройки</string>
+
+    <string name="name_hint">Наименование товара:</string>
+    <string name="price_hint">Цена товара, $:</string>
+    <string name="number_hint">Количество товара:</string>
+
+    <string name="apply">применить</string>
+    <string name="create">Добавление нового товара</string>
+    <string name="edit">Редактирование товара</string>
+
+    <string name="success_change">Товар успешно изменен</string>
+    <string name="success_create">Товар успешно добавлен</string>
+    <string name="delete">Тoваров удалено</string>
+
+    <string name="full_fill">Заполните все поля</string>
+
+    <string-array name="string_array_menu">
+        <item> изменить </item>
+        <item> удалить </item>
+    </string-array>
+</resources>

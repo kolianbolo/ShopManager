@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">List of goods</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="name_hint">Product name:</string>
+    <string name="price_hint">Price, $:</string>
+    <string name="number_hint">Quantity of goods:</string>
+
+    <string name="apply">apply</string>
+    <string name="create">Adding new product</string>
+    <string name="edit">Modifications</string>
+
+    <string name="success_change">Product successfully changed</string>
+    <string name="success_create">Product successfully created</string>
+    <string name="delete">Products deleted </string>
+
+    <string name="full_fill">Fill in all the fields</string>
+
+    <string-array name="string_array_menu">
+        <item> edit </item>
+        <item> delete </item>
+    </string-array>
+</resources>
