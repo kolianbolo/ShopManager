@@ -7,4 +7,4 @@
 - список реализован на RecycleView
 -товары подгружаются набольшими пачками по мере прокрутки списка
 - используется AndroidAnnotation
-
+Демонстрация работы в режиме планшета: https://www.youtube.com/watch?v=SEeMu6AJc48&feature=youtu.be
