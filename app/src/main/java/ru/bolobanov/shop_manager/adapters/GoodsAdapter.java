@@ -18,6 +18,8 @@ import ru.bolobanov.shop_manager.R;
 import ru.bolobanov.shop_manager.database.DatabaseService;
 import ru.bolobanov.shop_manager.fragments.GoodsListFragment;
 
+import static android.support.v7.widget.RecyclerView.ViewHolder;
+
 /**
  * Created by Bolobanov Nikolay on 12.11.15.
  */
@@ -25,9 +27,9 @@ import ru.bolobanov.shop_manager.fragments.GoodsListFragment;
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> implements View.OnClickListener, View.OnLongClickListener, DialogInterface.OnClickListener {
 
     //размер подгружаемого изначально окна
-    public final int START_SIZE = 10;
+    public final int START_SIZE = 20;
     //сколько элементов погружается при достижении края
-    public final int PAGE_SIZE = 5;
+    public final int PAGE_SIZE = 10;
 
     public final int EDIT = 0;
     public final int DELETE = 1;
@@ -48,7 +50,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     //сколько есть записей в таблице
     public int scale;
 
-    //это если создаем с нуля
+    //если создаем с нуля
     public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment) {
         mContext = pContext;
         mFragment = pFragment;
@@ -67,7 +69,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
     }
 
-    //это если восстанавливаем из savedInstanceState
+    //для восстанавливаем из savedInstanceState
     public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment, final int pScale, final ArrayList<Item> pItems) {
         mContext = pContext;
         mFragment = pFragment;
@@ -177,6 +179,12 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     private void deleteItem(int pPosition) {
         remove(pPosition);
         scale--;
+        //если мы будем удалять много, количество элементов будет уменьшатся,
+        //но сл. страница не подгрузится - ведь мы не скроллим
+        //сами подгрузил сл. страницу
+        if (mItems.size() - pPosition < START_SIZE) {
+            loadNext();
+        }
     }
 
     private int findPositionById(final long pId) {
@@ -233,7 +241,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     }
 
-    class GoodsViewHolder extends RecyclerView.ViewHolder {
+    class GoodsViewHolder extends ViewHolder {
 
         public final TextView mNameText;
         public final TextView mPriceText;

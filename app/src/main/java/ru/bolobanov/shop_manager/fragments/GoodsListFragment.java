@@ -57,14 +57,12 @@ public class GoodsListFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!recyclerView.canScrollVertically(1)) {
-                    onScrolledToBottom();
+                    //докрутили до самого низа, подгружаем следующую страницу
+                    GoodsAdapter adapter = (GoodsAdapter) list.getAdapter();
+                    adapter.loadNext();
                 }
             }
 
-            public void onScrolledToBottom() {
-                GoodsAdapter adapter = (GoodsAdapter) list.getAdapter();
-                adapter.loadNext();
-            }
         });
         list.setAdapter(adapter);
         final RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
