@@ -106,6 +106,7 @@ public class EditFragment extends Fragment {
                 clear();
                 showStub();
                 mOldItem = null;
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
             }
         }
     }
@@ -147,6 +148,7 @@ public class EditFragment extends Fragment {
         }
         clear();
         showStub();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
         Toast.makeText(getActivity(), getString(R.string.success_create), Toast.LENGTH_LONG).show();
     }
 
