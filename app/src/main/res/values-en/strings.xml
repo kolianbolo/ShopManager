@@ -20,6 +20,8 @@
 
     <string name = "pcs">pcs</string>
 
+    <string name = "stub_text">Select items to edit or create a new one</string>
+
     <string-array name="string_array_menu">
         <item> edit </item>
         <item> delete </item>

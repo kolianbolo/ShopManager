@@ -38,7 +38,7 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == Activity.RESULT_OK){
 
-            if(requestCode  == Constants.CREATE_REQUEST){
+            if(requestCode == Constants.CREATE_REQUEST){
                 Item newItem = data.getParcelableExtra(Constants.ITEM_KEY);
                 saveItem(newItem, true);
             }else if (requestCode == Constants.EDIT_REQUEST){
@@ -56,8 +56,8 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             editFragment.createItem();
         } else {
             Intent intent = new Intent(this, EditActivity_.class);
+            intent.putExtra(Constants.CREATE_KEY, true);
             startActivityForResult(intent, Constants.CREATE_REQUEST);
-
         }
         return null;
     }

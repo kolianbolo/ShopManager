@@ -2,12 +2,15 @@ package ru.bolobanov.shop_manager.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -25,6 +28,12 @@ import ru.bolobanov.shop_manager.database.DatabaseService;
 @EFragment(R.layout.f_edit)
 public class EditFragment extends Fragment {
 
+    //сохраняем значения, введенные в поля и mOldIte
+    private final String NAME_KEY = "name_key";
+    private final String PRICE_KEY = "price_key";
+    private final String NUMBER_KEY = "number_key";
+    private final String OLD_ITEM_KEY = "old_item_key";
+
     private Item mOldItem;
 
     @ViewById
@@ -36,27 +45,40 @@ public class EditFragment extends Fragment {
     @ViewById
     public EditText editNumber;
 
+    @ViewById
+    public LinearLayout editLinear;
+
+    @ViewById
+    public LinearLayout stubLinear;
+
+
     private OnItemSaveListener mCallback;
 
-    @AfterViews
-    public void init() {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
         mCallback = (OnItemSaveListener) getActivity();
+        if (savedInstanceState != null) {
+            mOldItem = savedInstanceState.getParcelable(OLD_ITEM_KEY);
+            editName.setText(savedInstanceState.getCharSequence(NAME_KEY));
+            editPrice.setText(savedInstanceState.getCharSequence(PRICE_KEY));
+            editNumber.setText(savedInstanceState.getCharSequence(NUMBER_KEY));
+        }
         final Intent receivedIntent = getActivity().getIntent();
         if (receivedIntent != null) {
+            Log.d("", "ПРИШЕЛ ИНТЕНТ " + receivedIntent.getAction());
             Item item = receivedIntent.getParcelableExtra(Constants.ITEM_KEY);
-            if (item == null) {
-                createItem();
-            } else {
+            if (item != null) {
                 editItem(item);
+            } else if (receivedIntent.getBooleanExtra(Constants.CREATE_KEY, false)){
+                createItem();
             }
         }
 
+        super.onActivityCreated(savedInstanceState);
     }
 
-
     public void editItem(Item pItem) {
-        clear();
-        mOldItem = pItem;
+        hideStub();
         editName.setText(pItem.mName);
         editPrice.setText(String.valueOf(pItem.mPrice));
         editNumber.setText(String.valueOf(pItem.mNumber));
@@ -68,6 +90,7 @@ public class EditFragment extends Fragment {
         mOldItem = null;
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.create);
         clear();
+        hideStub();
         //наэтом все - ожидаем ввода данных и нажатия на "применить"
     }
 
@@ -77,10 +100,20 @@ public class EditFragment extends Fragment {
         if (mOldItem != null) {
             if (pItem.mId == mOldItem.mId) {
                 clear();
+                showStub();
                 mOldItem = null;
             }
         }
+    }
 
+    private void showStub(){
+        stubLinear.setVisibility(View.VISIBLE);
+        editLinear.setVisibility(View.GONE);
+    }
+
+    private void hideStub(){
+        stubLinear.setVisibility(View.GONE);
+        editLinear.setVisibility(View.VISIBLE);
     }
 
     private void clear() {
@@ -109,6 +142,7 @@ public class EditFragment extends Fragment {
             mOldItem = null;
         }
         clear();
+        showStub();
         Toast.makeText(getActivity(), getString(R.string.success_create), Toast.LENGTH_LONG).show();
     }
 
@@ -117,5 +151,17 @@ public class EditFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (outState == null) {
+            outState = new Bundle();
+        }
+        outState.putCharSequence(NAME_KEY, editName.getText());
+        outState.putCharSequence(PRICE_KEY, editPrice.getText());
+        outState.putCharSequence(NUMBER_KEY, editNumber.getText());
+        outState.putParcelable(OLD_ITEM_KEY, mOldItem);
+        super.onSaveInstanceState(outState);
     }
 }

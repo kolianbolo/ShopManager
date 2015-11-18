@@ -10,6 +10,7 @@ public final class Constants {
     public static final String COLUMN_NUMBER = new String("number");
 
     public static final String ITEM_KEY = new String("item");
+    public static final String CREATE_KEY = new String("create_key");
 
     public static final int CREATE_REQUEST = 3465;
     public static final int EDIT_REQUEST = 3466;

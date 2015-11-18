@@ -20,6 +20,8 @@
 
     <string name = "pcs">штук</string>
 
+    <string name = "stub_text">Выберите товар для редактирования или создайте новый</string>
+
     <string-array name="string_array_menu">
         <item> изменить </item>
         <item> удалить </item>

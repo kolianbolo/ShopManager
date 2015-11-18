@@ -40,7 +40,6 @@ public class GoodsListFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         mCallback = (OnItemChangeListener) getActivity();
         final GoodsAdapter adapter;
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -68,7 +67,6 @@ public class GoodsListFragment extends Fragment {
         final RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         list.setItemAnimator(itemAnimator);
         super.onActivityCreated(savedInstanceState);
-
     }
 
     //этот метод вызывает адаптер
