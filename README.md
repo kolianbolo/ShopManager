@@ -10,4 +10,5 @@
 - используется AndroidAnnotation
 
 Демонстрация работы в режиме планшета:
+
 [![](http://img.youtube.com/vi/SEeMu6AJc48/0.jpg)](https://www.youtube.com/watch?v=SEeMu6AJc48)
