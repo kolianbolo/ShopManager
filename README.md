@@ -8,4 +8,4 @@
 -товары подгружаются набольшими пачками по мере прокрутки списка
 - используется AndroidAnnotation
 
-Демонстрация работы в режиме планшета: ![IMAGE ALT TEXT](http://img.youtube.com/vi/SEeMu6AJc48&feature/0.jpg)
+Демонстрация работы в режиме планшета: ![IMAGE ALT TEXT](http://img.youtube.com/vi/SEeMu6AJc48/0.jpg)
