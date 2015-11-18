@@ -48,7 +48,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         }
     }
 
-
     //создаем новый Item и открываем его в edtit fragment
     @Override
     public Item createItem() {

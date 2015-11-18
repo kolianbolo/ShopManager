@@ -44,12 +44,12 @@ public class DatabaseService {
 
     }
 
-    public Item[] getGoods(int start_id, int count) {
+    public Item[] getGoods(long start_id, int count) {
         final Item[] returnedArray = new Item[count];
         final SQLiteDatabase database = mDataseHelper.getReadableDatabase();
         final Cursor cursor = database.query(Constants.GOODS_TABLE,
                 new String[]{BaseColumns._ID, Constants.COLUMN_NAME, Constants.COLUMN_PRICE, Constants.COLUMN_NUMBER},
-                "_id >= ?", new String[]{String.valueOf(start_id)}, null, null, null, String.valueOf(count));
+                "_id > ?", new String[]{String.valueOf(start_id)}, null, null, null, String.valueOf(count));
         cursor.moveToFirst();
         int i = 0;
         do {

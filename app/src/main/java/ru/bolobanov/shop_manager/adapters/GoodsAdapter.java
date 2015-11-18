@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
 import ru.bolobanov.shop_manager.Item;
 import ru.bolobanov.shop_manager.R;
@@ -26,14 +25,14 @@ import ru.bolobanov.shop_manager.fragments.GoodsListFragment;
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> implements View.OnClickListener, View.OnLongClickListener, DialogInterface.OnClickListener {
 
     //размер подгружаемого изначально окна
-    public final int START_SIZE = 26;
+    public final int START_SIZE = 10;
     //сколько элементов погружается при достижении края
-    public final int PAGE_SIZE = 14;
+    public final int PAGE_SIZE = 5;
 
     public final int EDIT = 0;
     public final int DELETE = 1;
 
-    private final List<Item> mItems = new LinkedList<>();
+    private final ArrayList<Item> mItems;
 
     private final LayoutInflater mInflater;
 
@@ -49,11 +48,13 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     //сколько есть записей в таблице
     public int scale;
 
+    //это если создаем с нуля
     public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment) {
         mContext = pContext;
         mFragment = pFragment;
         mInflater = (LayoutInflater) pContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         scale = DatabaseService.getInstance(mContext).getGoodsSize();
+        mItems = new ArrayList<>();
         final Item[] itemArray = DatabaseService.getInstance(mContext).getGoods(0, START_SIZE);
         for (int i = 0; i < START_SIZE; i++) {
             if (itemArray[i] != null) {
@@ -64,6 +65,24 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         if (START_SIZE < scale) {
             mItems.add(null);
         }
+    }
+
+    //это если восстанавливаем из savedInstanceState
+    public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment, final int pScale, final ArrayList<Item> pItems) {
+        mContext = pContext;
+        mFragment = pFragment;
+        mInflater = (LayoutInflater) pContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        scale = pScale;
+        mItems = pItems;
+    }
+
+    public ArrayList<Item> getItems() {
+        return mItems;
+    }
+
+
+    public int getScale() {
+        return scale;
     }
 
     private void showDialog(long pItemId) {
@@ -92,7 +111,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         if (mItems.get(position) == null) {
             holder.mDataLinear.setVisibility(View.GONE);
             holder.mProgressLinear.setVisibility(View.VISIBLE);
-
+            holder.itemView.setTag(null);
         } else {
             holder.itemView.setTag(mItems.get(position).mId);
             holder.mDataLinear.setVisibility(View.VISIBLE);
@@ -119,7 +138,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
                 return;
             }
         }
-        final Item[] itemArray = DatabaseService.getInstance(mContext).getGoods(mItems.size(), PAGE_SIZE);
+        final long extremeId = mItems.get(mItems.size() - 2).mId;
+        final Item[] itemArray = DatabaseService.getInstance(mContext).getGoods(extremeId, PAGE_SIZE);
         for (int i = 0; i < PAGE_SIZE; i++) {
             if (itemArray[i] != null) {
                 //если достигли края
@@ -180,29 +200,37 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     @Override
     public void onClick(View v) {
-        long id = (long) v.getTag();
-        showDialog(id);
+        final Object tag = v.getTag();
+        if (tag != null) {
+            long id = (long) tag;
+            showDialog(id);
+        }
     }
 
     @Override
     public boolean onLongClick(View v) {
-        long id = (long) v.getTag();
-        showDialog(id);
+        final Object tag = v.getTag();
+        if (tag != null) {
+            long id = (long) tag;
+            showDialog(id);
+        }
         return true;
     }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
         final int position = findPositionById(mIdForDialog);
+        final Item clickedItem = mItems.get(position);
         switch (which) {
             case EDIT:
-                mFragment.changeItem(mItems.get(position));
+                mFragment.changeItem(clickedItem);
                 break;
             case DELETE:
-                mFragment.deleteItem(mItems.get(position));
+                mFragment.deleteItem(clickedItem);
                 deleteItem(position);
                 break;
         }
+
     }
 
     class GoodsViewHolder extends RecyclerView.ViewHolder {
