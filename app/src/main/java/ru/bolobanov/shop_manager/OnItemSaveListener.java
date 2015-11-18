@@ -5,4 +5,5 @@ package ru.bolobanov.shop_manager;
  */
 public interface OnItemSaveListener {
     void saveItem(final Item pItem, final boolean isNewItem);
+
 }

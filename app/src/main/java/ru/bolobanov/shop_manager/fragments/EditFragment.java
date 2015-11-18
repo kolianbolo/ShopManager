@@ -1,6 +1,7 @@
 package ru.bolobanov.shop_manager.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import ru.bolobanov.shop_manager.Constants;
 import ru.bolobanov.shop_manager.Item;
 import ru.bolobanov.shop_manager.OnItemSaveListener;
 import ru.bolobanov.shop_manager.R;
@@ -39,7 +41,18 @@ public class EditFragment extends Fragment {
     @AfterViews
     public void init() {
         mCallback = (OnItemSaveListener) getActivity();
+        final Intent receivedIntent = getActivity().getIntent();
+        if (receivedIntent != null) {
+            Item item = receivedIntent.getParcelableExtra(Constants.ITEM_KEY);
+            if (item == null) {
+                createItem();
+            } else {
+                editItem(item);
+            }
+        }
+
     }
+
 
     public void editItem(Item pItem) {
         clear();
@@ -100,13 +113,7 @@ public class EditFragment extends Fragment {
     }
 
     private boolean verify() {
-        if (TextUtils.isEmpty(editName.getText())) {
-            return false;
-        }
-        if (TextUtils.isEmpty(editPrice.getText())) {
-            return false;
-        }
-        if (TextUtils.isEmpty(editNumber.getText())) {
+        if (TextUtils.isEmpty(editName.getText()) || TextUtils.isEmpty(editPrice.getText()) || TextUtils.isEmpty(editNumber.getText())) {
             return false;
         }
         return true;

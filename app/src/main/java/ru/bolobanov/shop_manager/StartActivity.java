@@ -2,9 +2,8 @@ package ru.bolobanov.shop_manager;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -35,6 +34,19 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             isTablet = true;
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+
+            if(requestCode  == Constants.CREATE_REQUEST){
+                Item newItem = data.getParcelableExtra(Constants.ITEM_KEY);
+                saveItem(newItem, true);
+            }else if (requestCode == Constants.EDIT_REQUEST){
+                Item newItem = data.getParcelableExtra(Constants.ITEM_KEY);
+                saveItem(newItem, false);
+            }
+        }
+    }
 
 
     //создаем новый Item и открываем его в edtit fragment
@@ -44,6 +56,8 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             EditFragment editFragment = (EditFragment) getFragmentManager().findFragmentById(R.id.fragment_edit);
             editFragment.createItem();
         } else {
+            Intent intent = new Intent(this, EditActivity_.class);
+            startActivityForResult(intent, Constants.CREATE_REQUEST);
 
         }
         return null;
@@ -56,8 +70,9 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             EditFragment editFragment = (EditFragment) getFragmentManager().findFragmentById(R.id.fragment_edit);
             editFragment.editItem(pItem);
         } else {
-
-
+            Intent intent = new Intent(this, EditActivity_.class);
+            intent.putExtra(Constants.ITEM_KEY, pItem);
+            startActivityForResult(intent, Constants.EDIT_REQUEST);
         }
     }
 

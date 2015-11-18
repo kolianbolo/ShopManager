@@ -2,3 +2,5 @@ gradlew.bat
 local.properties
 ShopManager.iml
 .idea/
+.gradle/
+build/
