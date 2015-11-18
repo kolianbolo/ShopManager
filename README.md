@@ -9,3 +9,4 @@
 - используется AndroidAnnotation
 
 Демонстрация работы в режиме планшета: ![IMAGE ALT TEXT](http://img.youtube.com/vi/SEeMu6AJc48/0.jpg)
+[![Everything Is AWESOME](http://img.youtube.com/vi/SEeMu6AJc48/0.jpg)](https://www.youtube.com/watch?v=SEeMu6AJc48 "Everything Is AWESOME")
