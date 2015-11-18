@@ -21,11 +21,14 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
 
     public static boolean isTablet;
 
+    private final String HEADER_KEY = "header_key";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatabaseHelper = new ShopDatabaseHelper(this);
     }
+
 
     @AfterViews
     protected void init() {
@@ -34,14 +37,15 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             isTablet = true;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
 
-            if(requestCode == Constants.CREATE_REQUEST){
+            if (requestCode == Constants.CREATE_REQUEST) {
                 Item newItem = data.getParcelableExtra(Constants.ITEM_KEY);
                 saveItem(newItem, true);
-            }else if (requestCode == Constants.EDIT_REQUEST){
+            } else if (requestCode == Constants.EDIT_REQUEST) {
                 Item newItem = data.getParcelableExtra(Constants.ITEM_KEY);
                 saveItem(newItem, false);
             }
@@ -97,4 +101,22 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
             listFragment.changeItemInList(pItem);
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedState) {
+        if (savedState == null) {
+            savedState = new Bundle();
+        }
+        savedState.putCharSequence(HEADER_KEY, getSupportActionBar().getTitle());
+        super.onSaveInstanceState(savedState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedState) {
+        if (savedState != null) {
+            getSupportActionBar().setTitle(savedState.getCharSequence(HEADER_KEY));
+        }
+        super.onRestoreInstanceState(savedState);
+    }
+
 }

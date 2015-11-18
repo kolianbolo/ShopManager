@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,6 +32,7 @@ public class EditFragment extends Fragment {
     private final String PRICE_KEY = "price_key";
     private final String NUMBER_KEY = "number_key";
     private final String OLD_ITEM_KEY = "old_item_key";
+    private final String STUB_KEY = "stub_key";
 
     private Item mOldItem;
 
@@ -62,14 +62,18 @@ public class EditFragment extends Fragment {
             editName.setText(savedInstanceState.getCharSequence(NAME_KEY));
             editPrice.setText(savedInstanceState.getCharSequence(PRICE_KEY));
             editNumber.setText(savedInstanceState.getCharSequence(NUMBER_KEY));
+            if (savedInstanceState.getBoolean(STUB_KEY, false)) {
+                showStub();
+            } else {
+                hideStub();
+            }
         }
         final Intent receivedIntent = getActivity().getIntent();
         if (receivedIntent != null) {
-            Log.d("", "ПРИШЕЛ ИНТЕНТ " + receivedIntent.getAction());
             Item item = receivedIntent.getParcelableExtra(Constants.ITEM_KEY);
             if (item != null) {
                 editItem(item);
-            } else if (receivedIntent.getBooleanExtra(Constants.CREATE_KEY, false)){
+            } else if (receivedIntent.getBooleanExtra(Constants.CREATE_KEY, false)) {
                 createItem();
             }
         }
@@ -106,12 +110,12 @@ public class EditFragment extends Fragment {
         }
     }
 
-    private void showStub(){
+    private void showStub() {
         stubLinear.setVisibility(View.VISIBLE);
         editLinear.setVisibility(View.GONE);
     }
 
-    private void hideStub(){
+    private void hideStub() {
         stubLinear.setVisibility(View.GONE);
         editLinear.setVisibility(View.VISIBLE);
     }
@@ -158,6 +162,7 @@ public class EditFragment extends Fragment {
         if (outState == null) {
             outState = new Bundle();
         }
+        outState.putBoolean(STUB_KEY, stubLinear.getVisibility() == View.VISIBLE);
         outState.putCharSequence(NAME_KEY, editName.getText());
         outState.putCharSequence(PRICE_KEY, editPrice.getText());
         outState.putCharSequence(NUMBER_KEY, editNumber.getText());
