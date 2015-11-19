@@ -139,17 +139,18 @@ public class EditFragment extends Fragment {
                     Integer.valueOf(editNumber.getText().toString()));
             newItem = DatabaseService.getInstance(getActivity()).saveGood(newItem);
             mCallback.saveItem(newItem, true);
+            Toast.makeText(getActivity(), getString(R.string.success_create), Toast.LENGTH_LONG).show();
         } else {
             newItem = new Item(mOldItem.mId, editName.getText().toString(), Integer.valueOf(editPrice.getText().toString()),
                     Integer.valueOf(editNumber.getText().toString()));
             DatabaseService.getInstance(getActivity()).saveGood(newItem);
             mCallback.saveItem(newItem, false);
             mOldItem = null;
+            Toast.makeText(getActivity(), getString(R.string.success_change), Toast.LENGTH_LONG).show();
         }
         clear();
         showStub();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.app_name);
-        Toast.makeText(getActivity(), getString(R.string.success_create), Toast.LENGTH_LONG).show();
     }
 
     private boolean verify() {
