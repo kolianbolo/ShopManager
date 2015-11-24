@@ -18,18 +18,14 @@ import ru.bolobanov.shop_manager.R;
  */
 public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = new String("goods.db");
+    private static final String DATABASE_NAME = "goods.db";
     private static final int DATABASE_VERSION = 1;
 
     private Context mContext;
 
-    //create скрипт
-    private static final String DATABASE_CREATE_SCRIPT = new StringBuilder().append("create table ").
-            append(Constants.GOODS_TABLE).append(new String(" (")).append(BaseColumns._ID).
-            append(new String(" INTEGER PRIMARY KEY AUTOINCREMENT, ")).
-            append(Constants.COLUMN_NAME).append(new String(" TEXT NOT NULL, ")).
-            append(Constants.COLUMN_PRICE).append(new String(" INTEGER, ")).
-            append(Constants.COLUMN_NUMBER).append(new String(" INTEGER);")).toString();
+    private static final String DATABASE_CREATE_SCRIPT = "CREATE TABLE " + Constants.GOODS_TABLE +
+            " (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + Constants.COLUMN_NAME +
+            " TEXT NOT NULL, " + Constants.COLUMN_PRICE + " INTEGER, " + Constants.COLUMN_NUMBER + " INTEGER);";
 
     public ShopDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,11 +46,6 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * заполняем БД записями из raw/insert.sql
-     *
-     * @param db
-     */
     private void insert(SQLiteDatabase db) {
         InputStream inputStream = mContext.getResources().openRawResource(R.raw.insert);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

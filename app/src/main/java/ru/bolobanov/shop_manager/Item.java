@@ -19,16 +19,12 @@ public class Item implements Parcelable {
         mNumber = pCount;
     }
 
-    // конструктор, считывающий данные из Parcel
     private Item(Parcel parcel) {
         mId = parcel.readLong();
         mName = parcel.readString();
         mPrice = parcel.readInt();
         mNumber = parcel.readInt();
     }
-
-    public String s;
-    public int i;
 
     @Override
     public int describeContents() {
@@ -44,20 +40,11 @@ public class Item implements Parcelable {
     }
 
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
-        // распаковываем объект из Parcel
         public Item createFromParcel(Parcel in) {
             return new Item(in);
         }
-
         public Item[] newArray(int size) {
             return new Item[size];
         }
     };
-
-    public String toString() {
-        final String whitespace = new String(" ");
-        return new StringBuilder().append(mId).append(whitespace).append(mName).append(whitespace).
-                append(mPrice).append(whitespace).append(mNumber).append("\n").toString();
-    }
-
 }

@@ -42,6 +42,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.+'
     compile 'com.android.support:recyclerview-v7:+'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.squareup:otto:1.3.5'
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 }

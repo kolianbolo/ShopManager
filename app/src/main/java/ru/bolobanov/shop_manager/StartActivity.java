@@ -9,15 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
-import ru.bolobanov.shop_manager.database.ShopDatabaseHelper;
 import ru.bolobanov.shop_manager.fragments.EditFragment;
 import ru.bolobanov.shop_manager.fragments.GoodsListFragment;
 
-
 @EActivity(R.layout.a_start)
 public class StartActivity extends AppCompatActivity implements OnItemChangeListener, OnItemSaveListener {
-
-    private ShopDatabaseHelper mDatabaseHelper;
 
     public static boolean isTablet;
 
@@ -26,7 +22,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDatabaseHelper = new ShopDatabaseHelper(this);
     }
 
 
@@ -52,7 +47,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         }
     }
 
-    //создаем новый Item и открываем его в edtit fragment
     @Override
     public Item createItem() {
         if (isTablet) {
@@ -66,7 +60,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         return null;
     }
 
-    //нужно открыть существующий tem для редактирования
     @Override
     public void editItem(Item pItem) {
         if (isTablet) {
@@ -79,7 +72,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         }
     }
 
-    //проверим не удаляемый ли элемент сейчас редактируется
     @Override
     public void deleteItem(final Item pItem) {
         if (isTablet) {
@@ -88,7 +80,6 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         }
     }
 
-    //этот метод дергает editFragment сам или через intent
     @Override
     public void saveItem(Item pItem, final boolean isNewItem) {
         if (isNewItem) {
@@ -118,5 +109,4 @@ public class StartActivity extends AppCompatActivity implements OnItemChangeList
         }
         super.onRestoreInstanceState(savedState);
     }
-
 }

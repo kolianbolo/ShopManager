@@ -26,9 +26,7 @@ import static android.support.v7.widget.RecyclerView.ViewHolder;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> implements View.OnClickListener, View.OnLongClickListener, DialogInterface.OnClickListener {
 
-    //размер подгружаемого изначально окна
     public final int START_SIZE = 20;
-    //сколько элементов погружается при достижении края
     public final int PAGE_SIZE = 10;
 
     public final int EDIT = 0;
@@ -44,13 +42,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     private Dialog mDialog;
 
-    //храним id последнего элемента для которого вызывали диалог
     private long mIdForDialog = -1;
 
-    //сколько есть записей в таблице
     public int scale;
 
-    //если создаем с нуля
     public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment) {
         mContext = pContext;
         mFragment = pFragment;
@@ -63,13 +58,11 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
                 mItems.add(itemArray[i]);
             }
         }
-        //если данных слишком много - добавляем progressbar
         if (START_SIZE < scale) {
             mItems.add(null);
         }
     }
 
-    //для восстанавливаем из savedInstanceState
     public GoodsAdapter(final Context pContext, final GoodsListFragment pFragment, final int pScale, final ArrayList<Item> pItems) {
         mContext = pContext;
         mFragment = pFragment;
@@ -119,7 +112,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             holder.mDataLinear.setVisibility(View.VISIBLE);
             holder.mProgressLinear.setVisibility(View.GONE);
             holder.mNameText.setText(mItems.get(position).mName);
-            holder.mPriceText.setText(new StringBuilder().append(mItems.get(position).mPrice).append("$").toString());
+            holder.mPriceText.setText(mItems.get(position).mPrice + "$");
             holder.mNumberText.setText(new StringBuilder().append(mItems.get(position).mNumber).
                     append(" ").append(mContext.getString(R.string.pcs)));
         }
@@ -134,8 +127,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     public void loadNext() {
         if (mItems.size() == scale) {
-            //если последний элемент не является progress bar - загружено все
-            //если нет - загружает последний
             if (mItems.get(scale - 1) != null) {
                 return;
             }
@@ -144,7 +135,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         final Item[] itemArray = DatabaseService.getInstance(mContext).getGoods(extremeId, PAGE_SIZE);
         for (int i = 0; i < PAGE_SIZE; i++) {
             if (itemArray[i] != null) {
-                //если достигли края
                 if (mItems.size() == scale) {
                     remove(mItems.size() - 1);
                     add(mItems.size(), itemArray[i]);
@@ -157,19 +147,14 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
     }
 
-    //либо добавлени нового
+
     public void addItem(final Item pItem) {
-        //если длина списка == количество записей в таблице
-        //и если последний элемент - не крутилочка
-        //показываем новый
-        //иначе - нет, его и не должно пока быть
         if ((mItems.size() == scale) && (mItems.get(mItems.size() - 1) != null)) {
             add(mItems.size(), pItem);
         }
         scale++;
     }
 
-    // замена существующего
     public void changeItem(final Item pItem) {
         int position = findPositionById(pItem.mId);
         remove(position);
@@ -179,9 +164,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     private void deleteItem(int pPosition) {
         remove(pPosition);
         scale--;
-        //если мы будем удалять много, количество элементов будет уменьшатся,
-        //но сл. страница не подгрузится - ведь мы не скроллим
-        //сами подгрузил сл. страницу
         if (mItems.size() - pPosition < START_SIZE) {
             loadNext();
         }
